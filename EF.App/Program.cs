@@ -1,12 +1,19 @@
-﻿using System;
+﻿using EF.Lib;
+using EF.Model;
 
 namespace EF.App
 {
-    class Program
+    internal static class Program
     {
-        static void Main(string[] args)
+        private static void Main()
         {
-            Console.WriteLine("Hello World!");
+            var store = BookStore.Init();
+            store.TableAuthors.Add(new Author
+            {
+                FirstName = "Николай",
+                LastName = "Гоголь"
+            });
+            store.SaveChanges();
         }
     }
 }
