@@ -16,7 +16,7 @@ namespace EF.Lib
 
         public static BookStore Init()
         {
-            var builder = new ConfigurationBuilder(); ;
+            var builder = new ConfigurationBuilder();
             var connectionString = builder
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
