@@ -13,17 +13,21 @@ namespace EF.Lib.CRUD
         {
             _db = BookStore.Init();
         }
+
+        private void Exec(Author obj, Action<Author> exec)
+        {
+            exec.Invoke(obj);
+            _db.SaveChanges();
+        }
         
         public void Add(Author obj)
         {
-            _db.TableAuthors.Add(obj);
-            _db.SaveChanges();
+            Exec(obj, author => _db.TableAuthors.Add(author));
         }
 
         public void Update(Author obj)
         {
-            _db.TableAuthors.Update(obj);
-            _db.SaveChanges();
+            Exec(obj, author => _db.TableAuthors.Update(author));
         }
 
         public void Delete(Author obj) { }
