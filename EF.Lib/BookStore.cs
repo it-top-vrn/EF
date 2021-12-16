@@ -1,5 +1,7 @@
-﻿using EF.Model;
+﻿using System.IO;
+using EF.Model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace EF.Lib
 {
@@ -7,14 +9,22 @@ namespace EF.Lib
     {
         public DbSet<Author> TableAuthors { get; set; }
 
-        public BookStore()
+        public BookStore(DbContextOptions<BookStore> options) : base(options)
         {
             Database.EnsureCreated();
         }
-        
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+
+        public static BookStore Init()
         {
-            optionsBuilder.UseMySQL("server=mysql60.hostland.ru;user=host1323541_itstep;password=269f43dc;database=host1323541_vrn07;");
+            var builder = new ConfigurationBuilder(); ;
+            var connectionString = builder
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build()
+                .GetConnectionString("DefaultConnection");
+            var optionsBuilder = new DbContextOptionsBuilder<BookStore>();
+            var options = optionsBuilder.UseMySQL(connectionString).Options;
+            return new BookStore(options);
         }
     }
 }
